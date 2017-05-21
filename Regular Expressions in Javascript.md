@@ -3,63 +3,43 @@
 
 ## Introduction
 
-1. A **regular expression** is a Javascript object that describes a pattern of characters. It allows ways of searching or checking for patterns of characters within text.
+1. A **regular expression** is a Javascript object that describes a pattern of characters. It allows ways of searching or checking for such patterns characters within strings.
 
-2. Regular expressions are often extremely dense and cryptic in appearance. In fact, it is probably best to err on the side of moderation in their use, as they tend to be easier to write than to read, which may make it challenging for subsequent coders to understand.  Best to use with good commenting!
+2. Regular expressions are often extremely dense and cryptic in appearance. It is probably best to err on the side of moderation in their use, as they tend to be easier to write than to read, which may make it challenging for subsequent coders to understand.  Best to use with good commenting!
 
-3. On the other hand, they can be learned and implemented in an incremental manner.  One can learn a few rules at a time, and gradually incorporate them into one's coding. If one is comfortable with a usage, and it makes the solution to a coding problem easier, then go for it; if too difficult, just ignore them. 
+3. However, they can be learned and implemented in an incremental manner.  We can learn a few rules at a time, and gradually incorporate them into our code as we become comfortable with them.
 
 4. Regular expressions usually have a significant performance advantage over equivalent string operations in Javascript (according to *Javascript, The Good Parts, page 65*).
 
-5. Just as an example of what one can do, the following problem is from a code-challenge website. My original solution, without regular expressions, was straightforward, but rather cumbersome. After learning a bit about regular expressions, I revised my solution to that set out below, which required many fewer lines of code: 
+5. Simply as an example of what we can do, let's take a look at a problem from a code-challenge website. My original solution, without regular expressions, was straightforward but rather cumbersome. After learning a bit about regular expressions, I revised my solution as follows, requiring many fewer lines of code: 
 
-6. **Problem:** *Create a function to take the string parameter, (str), and determine if it is an acceptable sequence by either returning true or false. The str parameter will be composed of + and = symbols with several letters between them (*e.g.*, ++d+===+c++==a). Return true if each letter is surrounded by a "+" symbol.  So the previous example would return false, as "a" is not followed by a "+".*
+6. **Problem:** *Create a function to take a single string parameter, (str), and determine if it is an acceptable sequence by either returning true or false. The str parameter will be composed of + and = symbols with several letters between them (*e.g.*, ++d+===+c++==a). Return true if each letter is surrounded by a "+" symbol.  So the previous example would return false, as the final "a" is not followed by a "+".*
 
-    For now, don't worry about the meaning of the code, just note how easily one can code the inspections necessary to return the correct answer.  As you begin learning the syntax, revisit and see how well you understand what is being expressed.
+    For now, let's not worry about the meaning of the following regEx code; just note how easily we can code the inspections necessary to return the correct answer. As you begin learning the syntax, revisit and see how well you understand what is being expressed.
+    
+    Note, howevewr, that in the following solution, we identify four conditions we wish to satisfy:
+    
+    i. the string cannot begin with a letter,
+    ii. the string cannot end with a letter,
+    iii. no letter in the string can have anything immediately in front of it, other than a "+", and
+    iv. no letter in the string can be immediately followed by anything other than a "+",
     ```javascript
     function SearchSymbols(str) { 
 
-    // check to see if the string begins or ends with
-    // a letter (which would violate the condition of 
-    // having a '+' on each side)
-    	
-    		if (/^[a-zA-Z]/.test(str) || /[a-zA-Z]$/.test(str)) {
-        		return 'false'
-    		}
-    
-    		//then check to see if there are any instances of a letter i) preceded by something other than a '+' or ii) followed by something other than a '+'
-    	
-    		else if (/[^\+][a-zA-Z]/.test(str) || /[a-zA-Z][^\+]/.test(str)) {
-        		return 'false'
-    		}
-    	
-    		else {
-        		return 'true'
-    		}
-		}
+    //create an array of four regex expressions corresponding to the four requirements set forth above
+    const testArray = [/^\w/, /\w$/, /[^+]\w]/, /\w[^+]/];
 
-###Where to Use Regular Expressions
-####RegExp Properties
-#####lastIndex
-1. lastIndex is a RegExp property that specifies the index of the point immediately following the last match made by a RegExp pattern.  It applies only if the search pattern is using the global ('g') flag.  As discussed later, this flag directs the search to find all instances of a pattern match, rather than stopping after the first match is made.
-2. The lastIndex property starts at 0, and gets reset to 0 if no match is made by the exec() or test() methods.  The operation of the lastIndex property is illustrated below:
+    //for each item in the array, check to see if the string passes the test
+    //and return false if any pass, and true if all fail
+    	return !(testArray.some(val => val.test(str)));
+    ```
+## Where to Use Regular Expressions
+1. In what might seem to be a bit of a backwards approach, before we dive into the syntax of forming regular expressions, let's take a look at the places in which we would typically use regular expressions, the methods that are take reglar expressions as parameters or that are available to a RegExp object.
 
-		var str = "Ho, Ho, Ho, said the jolly old fat man.";
-		var pattern = /ho/ig;
-		console.log("lastIndex start: " + patt.lastIndex); => lastIndex start: 0)
-		while (patt.test(str) === true) {
-			console.log("now it is: " + patt.lastIndex);
-			
-		=> 	now it is: 2
-			now it is: 5
-			now it is: 8
-			
-			
-#
-###RegExp Methods
-1. RegExp is an object type in javascript, just as Array, String, Date, etc.  RegExp has two methods that are commonly used, exec() and test().  Test() is the easier method, so let's begin with it:
+### RegExp Methods
+1. A regular expression is a Javascript object, as sn Array, Date, *etc*.  As such, it has methods attached to its prototype, including two important ones discussed below, **exec()** and **test()**.  Test() is the easier method, so let's begin with it:
 
-##### **test()** 
+#### test() 
 1. Test() is an RegExp method that checks a string to see if it contains the pattern set forth in the given regular expression.
 	a. It takes a single parameter, being the string to be tested for a match.
 	b.  It has a boolean return value, i.e., true if a match occurs, and false if no match occurs.
@@ -154,6 +134,21 @@ Test() is a great method to use for practicing regular expressions.  As you lear
 			console.log(arr1) => ['ain', index: 5, input: 'The rain in Spain falls mainly on the captain.']
 			
 			console.log(arr2) => ['ain', 'ain', 'ain', 'ain']
+
+## RegExp Properties
+### lastIndex
+1. **lastIndex** is a RegExp property that specifies the index of the point immediately following the last match made by a RegExp pattern.  It applies only if the search pattern is using the global ('g') flag.  As discussed later, this flag directs the search to find all instances of a pattern match, rather than stopping after the first match is made.
+2. The lastIndex property starts at 0, and gets reset to 0 if no match is made by the exec() or test() methods.  The operation of the lastIndex property is illustrated below:
+
+		var str = "Ho, Ho, Ho, said the jolly old fat man.";
+		var pattern = /ho/ig;
+		console.log("lastIndex start: " + patt.lastIndex); => lastIndex start: 0)
+		while (patt.test(str) === true) {
+			console.log("now it is: " + patt.lastIndex);
+			
+		=> 	now it is: 2
+			now it is: 5
+			now it is: 8
 
 
 
