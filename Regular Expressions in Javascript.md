@@ -2,12 +2,25 @@
 [toc]
 
 ## Introduction
+Even among experienced programmers, *regular expressions* can seem a mystery, a kind of arcane, impenetrable syntax, but which yield incredible power to those who do master their use. It is one of those specialities that perhaps only one developer really seems to have mastered, so everyone else in the office comes to him or her whenever regular expressions appear in anything but the simplest of uses.
 
-1. A **regular expression** is a Javascript object that describes a pattern of characters. It allows ways of searching or checking for such patterns characters within strings.
+However, although they may appear incredibly cryptic and obscure to the unitiated, the syntax can be easily learned. Although I would also like to add that they can be *quickly* learned as well, that would be a bit of a stretch. In truth, they can be memorized in one, or a very few, sitting(s), but ease and master of use comes with time and practice.
 
-2. Regular expressions are often extremely dense and cryptic in appearance. It is probably best to err on the side of moderation in their use, as they tend to be easier to write than to read, which may make it challenging for subsequent coders to understand.  Best to use with good commenting!
+This introduction was initially written in response to comment by a classmate in General Assembly's Web Development Immersive program that she had been given a coding challenge in an interview involving regular expressions, and had no idea what to do. Although I agreed that it was a ridiculous question for a job interview, I had previously looked into regular expressions on my own, and thought it was an incredibly powerful tool that one could learn quickly and was extremely impressive, the kind of thing that could make newbies like us look like serious coders.
 
-3. However, they can be learned and implemented in an incremental manner.  We can learn a few rules at a time, and gradually incorporate them into our code as we become comfortable with them.
+The material in this text is meant to be a comprehensive guide to the rules and syntax of regular expressions. However, learning a topic such as regular expressions is a lot like learning to play an instrument. If I read a scientific treatise about the acoustics of vibrating strings, and then read all the notes of a Bach violin sonata, I would not claim to be able to play the piece until I had actually put my hands on a violin and practiced for a considerable amount of time. In the same way, fluency with regular expressions only begins with memorizing the rules, and must be supplemented with actual use. In particular, I would recommend the following three activities:
+
+a. Do the exercises in the book. Almost all are meant to be straightforward examples, with occassional "trickified" examples included to illustrate particular points.
+
+b. Review in detail the particular rules. Although they are generally straightforward, they are **exact** and **must be followed rigorously.** I suggest writing each rule on a notecard and going through them every day until the are memorized absolutely. Then go back periodically to make sure you haven't forgotten anything (I do once a week while taking a walk).
+
+c. As you learn new rules, test them! Think of weird edge cases, and try them out to see if they behave as expected.  This is the best way to really know how the rule applies and to prevent strange bugs from cropping up in one's code.
+
+1. A **regular expression ("RegEx")** is a Javascript object that describes a pattern of characters. It allows ways of searching or checking for such patterns characters within strings.
+
+2. Regular expressions are often extremely dense and cryptic in appearance. It is probably best to err on the side of moderation in their use, as they tend to be easier to write than to read, which may make it challenging for subsequent developers to understand. For all but the simplest cases, I highly recommend that a comment accompany the RegEx explaining what it is trying to match. In addition, it is a good idea to stay well within one's "comfort zone" in using RegExes, as they can easily generate unanticipated edge cases if the developer does not understand the rules **exactly**. 
+
+3. That said, they can be learned and implemented in an incremental manner. One can learn a few rules at a time, and gradually incorporate them into code as one become comfortable with them.
 
 4. Regular expressions usually have a significant performance advantage over equivalent string operations in Javascript (according to *Javascript, The Good Parts, page 65*).
 
