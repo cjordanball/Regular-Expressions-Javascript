@@ -30,11 +30,14 @@ c. As you learn new rules, test them! Think of weird edge cases, and try them ou
 
     For now, let's not worry about the meaning of the following regEx code; just note how easily we can code the inspections necessary to return the correct answer. As you begin learning the syntax, revisit and see how well you understand what is being expressed.
     
-    Note, howevewr, that in the following solution, we identify four conditions we wish to satisfy:
+    Note, however, that in the following solution, we identify four conditions we wish to satisfy:
     
     i. the string cannot begin with a letter,
+    
     ii. the string cannot end with a letter,
+    
     iii. no letter in the string can have anything immediately in front of it, other than a "+", and
+    
     iv. no letter in the string can be immediately followed by anything other than a "+",
     ```javascript
     function SearchSymbols(str) { 
@@ -46,6 +49,107 @@ c. As you learn new rules, test them! Think of weird edge cases, and try them ou
     //and return false if any pass, and true if all fail
     	return !(testArray.some(val => val.test(str)));
     ```
+## Getting Started
+To get up and running, we are going to very quickly examine a few rules to creating a valid regular expression, as well as one JavaScript method that relies on regular expressions. Once we are comfortable with these elementary examples, we will explore both creation and use of regular expressions in much greater detail.
+
+### Creating a Regular Expression
+1. A *regular expression* is a JavaScript *object*. As such, it can be created by use of a *constructor function*, using the *new* keyword, and we will examine creation using the constructor later in this outline. For now, however, we will use RegEx **literal notation.** This consists of text and symbols surrounded by a pair of **forward slashes**, optionally followed by one or more **flags**.  For example, the following creates a RegEx and assigns it to the variable *myRegEx*:
+    ```javascript
+    let myRegEx = /jordan/;
+    ```
+    The above RegEx would match any place in a given text where the sequence of letters "jordan" appears. It would not match "jor dan", or "jordache;" however, it would match the occurance of "jordan" in "jordan's."
+    
+    Of course, "jordan" is a name (my name, it so happens) and in standard English texts it would have an initial capital "J". **In general, matches in RegEx are case sensitive.** So, a more useful regular expression in this case might be:
+    ```javascript
+    let myRegEx = /Jordan/;
+    ```
+
+2. The **i** or **case-insensitive flag:** Of course, we want our searches to be as flexible as necessary to be reliable, and we may want to match against those cases where someone forgot to capitalize correctly. As an extreme example, suppose we were trying to look up references to the poet "E. E. Cummings," which was famously often styled as "e. e. cummings". We can catch both ways with the following:
+    ```javascript
+    let myRegEx = /e. e. cummings/i
+    ```
+    The letter "i" immediately following the final forward slash is known as a **flag**, in this case the *i-flag* or *case-insensitive flag*. The presence of this flag means that any letter in the regular expression will match against that letter, regardless of its case. For example, the expression immediately above will match against:
+    ```
+    e. e. cummings, E. E. Cummings, e. e. Cummings, E. e. CummingS
+    ```
+3. **Optional Charaters**: The *i-flag* adds a little flexibility to our search, by matching against a string, regardless of the case of letters. However, our search would not find variations in the spacing of the letters. For example, if the space between the first and middle initial was omitted, as in "e.e. cummings".  The asterisk character, **\***, adds some flexibility because it represents *zero or more* of the characters immediately preceding it. So, for example, the following:
+    ```javascript
+    let myRegEx = /e. *e. *cummings/i
+    ```
+    There is an asterisk following each space. This means there can be no spaces, or a single space, or multiple spaces. So, the above example would match:
+    ```
+    e.e.cummings, e. e.cummings, e. e.          cummings, E.     E.cummings
+    ```
+4. **Wild-Card character**: Finally, as our final introductory rule, we will introduce the *wild-card* character, a period ("**.**"). **Be sure not to confuse the asterisk and the dot.** In many other contexts, of course, the **\*** is used as a wild-card character, which may lead to confusion. Also, the two may be used together, as in ".\*", which basically matches against *anything*, since what it means is "zero or more of any character".
+
+    As a simple example, the regular expression:
+    ```javascript
+    let myRegEx = /h.t/;
+    ```
+    would match the following:
+    ```
+    hot, hotel, hat, http, hit
+    ```
+### Using a Regular Expression
+1. So far, we have learned a few basic, but very important rules of creating regular expressions, which we can use to identify patterns in strings. However, we have yet to go over any of the methods in which we actually make use of RegExes. In fact, so far we have no way of even checking to see if my claims as to what strings a particular RegEx matches are accurate.
+
+2. As an introduction, we will examine a new JavaScript method, **test()**. This method has the following characteristics:
+
+    a. it is a Regular Expression prototype (*i.e.*, instance) method. Thus, it is called on an instance of a particular RegEx.
+    
+    b. it takes a single parameter, a string.
+    
+    c. it returns a **boolean**, which will be **true** if a match for the RegEx is contained in the string argument, and **false** if it is not.
+    
+    d. there is no side effect.
+    
+3. **Example:** Let's say you want to see if the dot ( . ) really works as a wild card. We could run the following code:
+    ```javascript
+    //workspace.js
+    let myRegEx = /h.t/;
+    
+    let results = myRegEx.test('hot');
+    
+    console.log(results);
+    ```
+    We can then run this file in the terminal with:
+    ```
+    node workspace.js
+    ```
+    and the output to the console (the terminal in this case) will be *true*, because the string "hot" did contain the sequence of characters "h.t", where the dot could be anything. We could then run:
+    ```javascript
+    //workspace.js
+    let myRegEx = /h.t/;
+    
+    let results = myRegEx.test('happy');
+    ```
+    and when we run the run the file as before, using *node workspace.js*, we will get the result *false*, because the pattern /h.t/ is not contained in the string "happy".
+
+4. With this basic knowledge, we are now set to begin an in-depth examination of the rules governing the use of regular expressions. As we go over these rules, we will use the *test()* method frequently to get our hands dirty and check that our understanding of each rule is correct. After we have gone through the rules in some detail, we will then go back and examine other string and RegEx methods that make use of regular expressions and see how we can take advantage of the fantastic powers that RegEx provides us.
+
+## Rules for Interpreting Regular Expressions
+
+### Rule 1: Begin and End the Regular Expression With "/"
+1. We have already gone over this rule, and there is not much further to add.
+
+### Rule 2: A regular expression consisting of only of simple character values merely matches the target against that exact string.
+1. The easiest example of a regular expression is one in which there is nothing going on beyond a simple search for a specific string. Of course, this does not add much to simply using the **indexOf()** method, but it is a place to start. For example:
+    ```javascript
+    var pattern = /dog/;
+    var strings = ["cat", "dog", "doggie", "dig", "Thou shalt have no other Dogs before me"];
+    var results = strings.map(function(val){
+        return pattern.test(val);
+    });
+    console.log(results) // => [false, true, true, false, false]
+    ```
+    Remember, a match is found, and thus the return value of *test()* is true, if the string **contains** the exact combination of characters contained within the slashes. The string can have *additional* characters (see "doggie" in the example above), as long as it contains the given combination.
+    
+2. **Escape characters**: Many characters have special functionality when contained in a RegEx; for example, as we have previously seen, the dot ( . ) is a wild-card. However, sometimes we might wish to search for a period in a string. To remove the special RegEx meaning of the dot (or other special characters), we precede them with the **escape character, "\\"**.
+
+:::danger
+xxx
+xxx
+:::
 ## Where to Use Regular Expressions
 1. In what might seem to be a bit of a backwards approach, before we dive into the syntax of forming regular expressions, let's take a look at the places in which we would typically use regular expressions, the methods that are take reglar expressions as parameters or that are available to a RegExp object.
 
@@ -201,24 +305,6 @@ Test() is a great method to use for practicing regular expressions.  As you lear
 2. One can delay the inevitable by talking *about* regular expressions, complaining about them, or pretending to understand them in theory.  However, to be able to use them (whether in writing code or, even more challenging, reviewing previously written code), one must at some point simply memorize a rather modest amount of syntax.  I suggest two approaches for doing this: first, make flash cards, a dual column list, or some other means of concretely testing one's memory, then go through the cards once a day until they are solidly in memory.  Second, use them in code, even if only in small snippets.  The only way to really learn how they work is to actually use them.
 
 
-#####Rule 1: Begin and End the Regular Expression With "/"
-#####Rule 2: A regular expression consisting of only of simple char values merely matches the target against that exact string.
-1. Although not used when using the RegExp constructor, the more typical way one will see regular expressions is as a string of characters beginning and ending with a forward slash.
-2.   The easiest example of a regular expression is one in which there is nothing going on except a simple search.  Of course, this does not add any functionality to simply using indexOf() with a string, but it is a place to start: Examples:
-
-		var pattern = /dog/;
-		var strings = ["cat", "dog", "doggie", "dig", "Thou shalt have no other Dogs before me"];
-		var results = strings.map(function(val){
-			return pattern.test(val);
-		});
-		
-		console.log(results) // => [false, true, true, false, false]
-
-
-		var pattern = /3.14/;
-		var string = "The value of many numbers cannot be expressed in a finite number of decimal digits.  For example, the value of pi is only approximated by the digits 3.1415 and even rational fractions often result in unending decimal representations."
-		
-		console.log(pattern.test(string)) // => true
 
 
 #####Rule 3:  A "." is a wild card character that represents any other character (except line terminators).
